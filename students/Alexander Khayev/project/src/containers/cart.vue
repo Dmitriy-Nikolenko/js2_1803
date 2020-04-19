@@ -44,34 +44,47 @@
           })
       },
       _deleteFromCart(cartItem) {
-        this.$parent.post("/api/delbasket.json", cartItem)
-          .then(res => {
-            if (1 === res.result) {
-              if (cartItem.quantity > 1) {
+        let find = this._findItem(cartItem.id_product)
+        if (undefined === find) {
+          throw Error('Нельзя удалить неудаляемое')
+        }
+        if (find.quantity > 1) {
+          this.$parent.putData(`/api/changecart.json/${cartItem.id_product}`, {delta: -1})
+            .then(res => {
+              if (1 === res.result) {
                 cartItem.quantity--;
-              } else {
-                this.cartItems.splice(this.cartItems.indexOf(cartItem), 1);
               }
-            } else {
-              throw Error('Error delete item');
-            }
-          })
+            })
+        } else {
+          this.$parent.deleteData(`/api/delbasket.json/${cartItem.id_product}`)
+            .then(res => {
+              if (1 === res.result) {
+                this.cartItems.splice(this.cartItems.indexOf(cartItem), 1);
+              } else {
+                throw Error('Error delete item');
+              }
+            })
+        }
       },
       addToCart(catalogItem) {
-        let obj = this._createFromCatalogItem(catalogItem);// JSON.parse(JSON.stringify(prod)); // must be created NEW OBJECT!
-        this.$parent.post("/api/tobasket.json", obj)
-          .then(res => {
-            if (1 === res.result) {
-              let find = this._findItem(obj.id_product);
-              if (find === undefined) {
-                this.cartItems.push(obj);
-              } else {
-                ++find.quantity;
+        let find = this._findItem(catalogItem.id_product);
+        if (find === undefined) {
+          let newObj = this._createFromCatalogItem(catalogItem)
+          this.$parent.postData("/api/tobasket.json", newObj)
+            .then(r => {
+              if (1 === r.result) {
+                this.cartItems.push(newObj);// JSON.parse(JSON.stringify(prod)); // must be created NEW OBJECT!)
               }
-            } else {
-              throw Error('Error add item');
-            }
-          })
+            })
+        } else {
+          this.$parent.putData(`/api/changecart.json/${find.id_product}`, {delta: 1})
+            .then(r => {
+                if (1 === r.result) {
+                  ++find.quantity;
+                }
+              }
+            )
+        }
       },
       _findItem(id) {
         return this.cartItems.find(product => +product.id_product === +id);

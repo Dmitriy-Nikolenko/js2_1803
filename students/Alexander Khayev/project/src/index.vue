@@ -5,7 +5,8 @@
       <div class="logo">{{companyName}}</div>
       <div class="cart">
         <search-menu v-model="searchString" :value="searchString"></search-menu>
-        <button class="btn-cart" @click="show = !show">Cart<span>{{$refs.cart ? $refs.cart.cartItems.length: 0}}</span></button>
+        <button class="btn-cart" @click="show = !show">Cart<span>{{$refs.cart ? $refs.cart.cartItems.length: 0}}</span>
+        </button>
         <transition name="fade">
           <cart ref="cart"></cart>
         </transition>
@@ -36,7 +37,7 @@
             this.showDialog('Не удалось загрузить данные');
           })
       },
-      post(url, obj) {
+      postData(url, obj) {
         return fetch(url, {
           method: 'POST',
           headers: {
@@ -47,12 +48,31 @@
           .then(data => data.json())
           .catch(e => this.showDialog('Не удалось загрузить данные'));
       },
+      putData(url, obj) {
+        return fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': "application/json"
+          },
+          body: JSON.stringify(obj),
+        })
+          .then(data => data.json())
+          .catch(e => this.showDialog('Не удалось загрузить данные'));
+      },
+      deleteData(url, obj) {
+        return fetch(url, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': "application/json"
+          },
+          body: JSON.stringify(obj),
+        })
+          .then(data => data.json())
+          .catch(e => this.showDialog('Не удалось загрузить данные'));
+      },
       showDialog(msg) {
         this.$refs.showDialog.value = msg;
-        // setTimeout(() => {
         this.dialogShow = true;
-        // }, 0);
-        //alert(msg);
       },
     },
     data() {

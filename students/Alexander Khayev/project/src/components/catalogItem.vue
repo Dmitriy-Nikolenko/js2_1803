@@ -4,7 +4,7 @@
     <div class="desc">
       <h1>{{item.product_name}}</h1>
       <p>${{item.price}}</p>
-      <button class="buy-btn" name="buy-btn" @click="$emit('addtocart', item)">Купить</button>
+      <button class="buy-btn" name="buy-btn" @click.stop="$emit('addtocart', item, $event)">Купить</button>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@
       item: {
         type: Object
       }
-    }
+    },
   }
 </script>
 

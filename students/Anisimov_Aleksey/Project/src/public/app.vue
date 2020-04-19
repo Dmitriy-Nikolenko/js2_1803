@@ -19,6 +19,7 @@
 <script>
 //import catalog from './containers/catalog'
 //import cart from './containers/cart'
+
 export default {
     name: 'App',
     components: {
@@ -32,19 +33,39 @@ export default {
       }
     },
     methods: {
-      sendData(url, obj) {
-        return fetch(url, {
-          method: 'post',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(obj) //['id', 'title', 'price']
-        })
-            .then(dataResived => dataResived.json())
-      },
+      // sendData(url, obj) {
+      //   return fetch(url, {
+      //     method: 'post',
+      //     headers: {
+      //       'Accept': 'application/json',
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify(obj) //['id', 'title', 'price']
+      //   })
+      //       .then(dataResived => dataResived.json())
+      // },
       getData(url) {
         return fetch(url).then(dataResived => dataResived.json())
+      },
+      postData(url, item) {
+            return fetch(url, {
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(item)
+            }).then(d => d.json())
+        },
+      putData(url, delta) {
+          return fetch(url, {
+              method: 'PUT',
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify(delta)
+          }).then(d => d.json())
+      },
+      deleteData(url) {
+          return fetch(url, {
+              method: 'DELETE',
+              headers: {"Content-Type": "application/json"},
+          }).then(d => d.json())
       },
       checkSearchStr() { // приводим строку поиска к норм формату
             this.searchStr = (this.searchStr.trim()).replace(/\s{2,}/g, ' ') // сначала тримим, потом азмена множественных пробелов на один

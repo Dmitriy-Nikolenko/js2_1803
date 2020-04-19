@@ -9,7 +9,9 @@
     "api": "nodemon server"
   },
   "nodemonConfig": {
-    "ignore": ["*.json"]
+    "ignore": [
+      "*.json"
+    ]
   },
   "keywords": [],
   "author": "",

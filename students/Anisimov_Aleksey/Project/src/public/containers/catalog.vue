@@ -1,11 +1,12 @@
 <template>
     <div class="product center">
-        <item v-for="item of filteredItems" :key="item.id" :item='item' @add='addToCart' />
+        <item v-for="item of filteredItems" :key="item.id_product" :item='item' type=catalog />
+        <item type=temp @create="createNewItem"/>
     </div>
 </template>
 
 <script>
-//import item from '../components/item'
+
 export default {
     components: {
         item: () => import('../components/item')
@@ -15,44 +16,30 @@ export default {
             items: [],
             searchStr: '',
             filteredItems: [],
-            url: '/api/catalog'
-            //url: 'https://static.trendco.space/js-adv/responses/goods.json'
+            url: '/api/catalog',
         }
     },
     methods: {
-        addToCart(data) {
-            let tempCart = this.$parent.$refs.cartRef.items
-            let currItem = tempCart.find(item => item.id === data.id)
-            if (currItem === undefined) {
-                tempCart.push({
-                    id: data.id,
-                    title: data.title,
-                    quantity: 1,
-                    price: data.price,
-                    summ: data.price
-                })
-            } else {
-                currItem.quantity++
-                currItem.summ = currItem.quantity * currItem.price
-            }
-            this.$parent.sendData('/api/addtocart', tempCart)
-                .then( res => {
-                    if (res.result === 1) {
-                        console.log('Success! File write!');
-                    } else {
-                        console.log('!!!Error read file!!!');
-                        
-                    }
+        addToCart(item) {
+            this.$parent.$refs.cartRef.addToCart(item)
+        },
+        createNewItem(payload) {
+            console.log(payload)
+            this.$parent.postData(this.url, payload)
+                .then(d => {
+                    if(d._id) {
+                        this.items.push({
+                        product_name: payload.name,
+                        price: payload.price,
+                        id_product: d._id
+                    })
+                }
             })
-
         },
         filterGoods(string) {
             let regexp = new RegExp(string, 'i') // создали регулярку
-            this.filteredItems = this.items.filter(good => regexp.test(good.title)) // отфильтровали и записали, следом сразу рендер
+            this.filteredItems = this.items.filter(good => regexp.test(good.product_name)) // отфильтровали и записали, следом сразу рендер
         }
-    },
-    computed: {
-
     },
     mounted() {
         this.$parent.getData(this.url)

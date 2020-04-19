@@ -11,8 +11,8 @@
                 </form>
                 <!-- button class="btn-cart" @click="showcart = !showcart">Cart</button>
                 <div class="cart-block" v-show="showcart" -->
-                <button class="btn-cart">Cart</button>
-                    <cart ref="cartRef" />
+                <button class="btn-cart" @click="showCart = !showCart">Cart</button>
+                <cart v-show="showCart" ref="cartRef" />
             </div>
         </header>
 
@@ -31,11 +31,36 @@
             catalog,
             cart
         },
+        data() {
+            return {
+                showCart: false
+            }
+        },
         methods: {
             getData(url) {
                 return fetch(url)
-                .then(dataReceived => dataReceived.json())
-            }
+                    .then(dataReceived => dataReceived.json())
+            },
+            postData(url, item) {
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(item)
+                }).then(d => d.json())
+            },
+            putData(url, delta) {
+                return fetch(url, {
+                    method: 'PUT',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(delta)
+                }).then(d => d.json())
+            },
+            deleteData(url) {
+                return fetch(url, {
+                    method: 'DELETE',
+                    headers: {"Content-Type": "application/json"},
+                }).then(d => d.json())
+            },
         }
     }
 </script>

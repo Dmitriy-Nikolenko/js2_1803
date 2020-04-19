@@ -1,28 +1,37 @@
 [
-    {
-     "id_product": 123,
-     "product_name": "Ноутбук",
-     "price": 45600
-    },
-    {
-     "id_product": 456,
-     "product_name": "Мышка",
-     "price": 1000
-    },
-    {
-     "id_product": 567,
-     "product_name": "Лампа",
-     "price": 100
-    },
-    {
-     "id_product": 678,
-     "product_name": "Холодильник",
-     "price": 10000
-    },
-    {
-        "id_product": 670,
-        "product_name": "Флешка",
-        "price": 230
-    }
-
+ {
+  "id_product": 123,
+  "product_name": "Ноутбук",
+  "price": 45600
+ },
+ {
+  "id_product": 456,
+  "product_name": "Мышка",
+  "price": 1000
+ },
+ {
+  "id_product": 567,
+  "product_name": "Лампа",
+  "price": 100
+ },
+ {
+  "id_product": 678,
+  "product_name": "Холодильник",
+  "price": 10000
+ },
+ {
+  "id_product": 670,
+  "product_name": "Флешка",
+  "price": 230
+ },
+ {
+  "product_name": "Зарядка",
+  "price": "790",
+  "id_product": "2020-04-14T12:16:02.930Z"
+ },
+ {
+  "product_name": "Телефон",
+  "price": "10000",
+  "id_product": "2020-04-14T12:50:52.944Z"
+ }
 ]

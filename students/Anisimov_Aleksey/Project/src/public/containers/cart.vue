@@ -7,15 +7,16 @@
           <p class="cart__p">Всего товаров: {{ totalCartItems }} шт.</p>
           <hr class="cart__hr">
           
-          <item v-for="item of this.items" :key='item.id' :item='item' type='cart' @remove='removeFromCart'/>
+          <item v-for="item of this.items" :key='item.id_product' :item='item' type=cart @remove='removeFromCart'/>
 
           <hr class="cart__hr">
-          <p class="cart__p">Общая стоимость: ${{ totalCartSUmm }}</p>
+          <!-- <p class="cart__p">Общая стоимость: ${{ totalCartSUmm }}</p> -->
         </div>
     </div>
 </template>
 
 <script>
+
 export default {
     components: {
         item: () => import('../components/item')
@@ -24,10 +25,51 @@ export default {
         return {
             items: [],
             isVisibleCart: false,
-            isEmptyCart: false
+            isEmptyCart: false,
+            url: '/api/cart',
         }
     },
     methods: {
+        addToCart(item) {
+            let id = item.id_product
+            let find = this.items.find (product => product.id_product === id)
+            if (find) {
+                this.$parent.putData(`/api/cart/${find.id_product}`, {delta: 1})
+                .then(stat => {
+                    if (stat.status) {
+                        find.quantity++
+                    }
+                })
+            } else {
+                let newItem = Object.assign({}, item, {quantity: 1})
+                this.$parent.postData(this.url, newItem).then(d => {
+                    if (d.status) {
+                        this.items.push (newItem)
+                    }
+                })
+                
+            }
+        },
+        removeFromCart(item) {
+            let id = item.id_product
+            let find = this.items.find (product => product.id_product === id)
+            if (find.quantity > 1) {
+                this.$parent.putData(`/api/cart/${find.id_product}`, {delta: -1})
+                .then(stat => {
+                    if (stat.status) {
+                        find.quantity--
+                    }
+                })
+            } else {
+                this.$parent.deleteData(`/api/cart/${find.id_product}`)
+                .then(stat => {
+                    if (stat.status) {
+                        this.items.splice (this.items.indexOf(find), 1)
+                    }
+                })
+            }
+            this.hideCart()
+        },
         isCartEmpty() {
             if (this.items.length === 0) {
                 return true
@@ -49,10 +91,10 @@ export default {
             }
         },
         
-        removeFromCart(el) {
-            this.items = this.items.filter(item => item.id !== el.id)
-            this.hideCart()
-        },
+        // removeFromCart(el) {
+        //     this.items = this.items.filter(item => item.id !== el.id)
+        //     this.hideCart()
+        // },
         
     },
     computed: {
@@ -75,6 +117,7 @@ export default {
         if (!this.isCartEmpty) {
             this.isEmptyCart = false
         }
+
     }
     
 }

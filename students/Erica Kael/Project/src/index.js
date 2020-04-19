@@ -1,3 +1,5 @@
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 import './public/css/style.css'
 import './public/css/normalize.css'

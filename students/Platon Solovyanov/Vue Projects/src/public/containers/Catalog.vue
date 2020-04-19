@@ -1,6 +1,7 @@
 <template>
   <div class="products">
     <item v-for="item of items" :key="item.id_product" :item="item" />
+    <item :type="'temp'" @createItem="createNewItem" />
   </div>
 </template>
 
@@ -11,22 +12,29 @@ export default {
   data() {
     return {
       items: [],
-      url:
-        "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json"
+      url: "/api/catalog",
     };
   },
-  //   methods: {},
-  //   computed: {},
+  methods: {
+    createNewItem(item) {
+      let id = new Date().getTime();
+      let obj = Object.assign({ id_product: id }, item);
+      this.$parent.postData(this.url, obj).then((data) => {
+        if (data.result === 1) {
+          this.items.push(obj);
+        }
+      });
+    },
+  },
   mounted() {
-    // console.log(this);
     this.$parent
       .getData(this.url)
-      .then(result => {
+      .then((result) => {
         this.items = result;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
-  }
+  },
 };
 </script>

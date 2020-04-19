@@ -9,8 +9,8 @@
             <i class="fas fa-search"></i>
           </button>
         </form>
-        <button class="btn-cart" @click="$refs.cart.showCart = !$refs.cart.showCart">Cart</button>
-        <cart ref="cart" />
+        <button class="btn-cart" @click="showCart = !showCart">Cart</button>
+        <cart ref="cart" v-show="showCart" />
       </div>
     </header>
     <main>
@@ -20,22 +20,52 @@
 </template>
 
 <script>
+//
 //add packeges (import) подключаем всякие jquery
 import catalog from "./containers/Catalog.vue";
 import cart from "./containers/Cart.vue";
 export default {
   components: {
     catalog,
-    cart
+    cart,
+  },
+  data() {
+    return {
+      showCart: false,
+    };
   },
 
   methods: {
     getData(url) {
-      return fetch(url).then(data => data.json());
-    }
-  }
+      return fetch(url).then((data) => data.json());
+    },
+    postData(url, obj) {
+      return fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(obj),
+      }).then((data) => data.json());
+    },
+    putData(url, obj) {
+      return fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(obj),
+      }).then((data) => data.json());
+    },
+    deleteData(url, obj) {
+      return fetch(url, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(obj),
+      }).then((data) => data.json());
+    },
+  },
 };
 </script>
 
 <style>
+.cart {
+  text-align: right;
+}
 </style>

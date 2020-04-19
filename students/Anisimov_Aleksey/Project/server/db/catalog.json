@@ -1,26 +1,32 @@
 [
-	{   "id":1,
-		"title":"Monitor 27 inch",
-		"price":4198
-	},
-	{   "id":2,
-		"title":"Processor i10",
-		"price":4265
-	},
-	{   "id":3,
-		"title":"Solid State Drive",
-		"price":2199
-	},
-	{   "id":4,
-		"title":"Video card",
-		"price":321}
-		,
-	{   "id":5,
-		"title":"Case",
-		"price":1526
-	},
-	{   "id":6,
-		"title":"Mother board",
-		"price":4810
-	}
+  {
+    "id_product": 1,
+    "product_name": "Monitor 27 inch",
+    "price": 4198
+  },
+  {
+    "id_product": 2,
+    "product_name": "Processor i10",
+    "price": 4265
+  },
+  {
+    "id_product": 3,
+    "product_name": "Solid State Drive",
+    "price": 2199
+  },
+  {
+    "id_product": 4,
+    "product_name": "Vid_producteo card",
+    "price": 321
+  },
+  {
+    "id_product": 5,
+    "product_name": "Case",
+    "price": 1526
+  },
+  {
+    "id_product": 6,
+    "product_name": "Mother board",
+    "price": 4810
+  }
 ]
